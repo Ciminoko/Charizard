@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Welcome to the Car Store</h1>
+    <p>Your one-stop shop for browsing and managing cars.</p>
+
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('api.register') }}">Register</a></li>
+            <li><a href="{{ url_for('api.login') }}">Login</a></li>
+            <li><a href="{{ url_for('api.get_cars') }}">View Cars</a></li>
+        </ul>
+    </nav>
+
+    <section>
+        <h2>Available Cars</h2>
+        <p>Explore our extensive collection of cars. You can add, update, or delete cars if you are an authorized user.</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Car Store. All rights reserved.</p>
+    </footer>
+</body>
+</html>

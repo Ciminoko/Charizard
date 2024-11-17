@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Cars</title>
+    <script>
+        async function fetchCars() {
+            try {
+                const response = await fetch('/api/cars');  // Предполагая, что ваш API-эндпоинт доступен по этому пути
+                const cars = await response.json();
+                const carsList = document.getElementById('cars-list');
+                cars.forEach(car => {
+                    const li = document.createElement('li');
+                    li.textContent = `${car.make} ${car.model} (${car.year})`;
+                    carsList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Error fetching cars:', error);
+            }
+        }
+        window.onload = fetchCars;
+    </script>
+</head>
+<body>
+    <h1>Available Cars</h1>
+    <ul id="cars-list"></ul>
+</body>
+</html>
