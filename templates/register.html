@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>Register</h2>
-<form method="post" action="{{ url_for('api.register') }}">
+<form method="POST" action="{{ url_for('api.register') }}">
     <label for="username">Username:</label>
     <input type="text" id="username" name="username" required>
     <br>
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" required>
     <br>
-    <input type="submit" value="Register">
+    <button type="submit">Register</button>
 </form>
 {% endblock %}

@@ -13,9 +13,16 @@
     <nav>
         <ul>
             <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('api.register') }}">Register</a></li>
-            <li><a href="{{ url_for('api.login') }}">Login</a></li>
+            {% if not session['user_id'] %}
+                <li><a href="{{ url_for('api.register') }}">Register</a></li>
+                <li><a href="{{ url_for('api.login') }}">Login</a></li>
+            {% else %}
+                <li><a href="{{ url_for('api.logout') }}">Logout</a></li>
+            {% endif %}
             <li><a href="{{ url_for('api.get_cars') }}">View Cars</a></li>
+            {% if session['user_id'] %}
+                <li><a href="{{ url_for('add_car_form') }}">Add Car</a></li>
+            {% endif %}
         </ul>
     </nav>
 

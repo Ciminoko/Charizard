@@ -1,29 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Cars</title>
-    <script>
-        async function fetchCars() {
-            try {
-                const response = await fetch('/api/cars');  // Предполагая, что ваш API-эндпоинт доступен по этому пути
-                const cars = await response.json();
-                const carsList = document.getElementById('cars-list');
-                cars.forEach(car => {
-                    const li = document.createElement('li');
-                    li.textContent = `${car.make} ${car.model} (${car.year})`;
-                    carsList.appendChild(li);
-                });
-            } catch (error) {
-                console.error('Error fetching cars:', error);
-            }
-        }
-        window.onload = fetchCars;
-    </script>
-</head>
-<body>
-    <h1>Available Cars</h1>
-    <ul id="cars-list"></ul>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+<h2>Available Cars</h2>
+<div id="cars-list"></div>
+
+<h3>Add a Car</h3>
+<form id="add-car-form">
+    <label for="make">Make:</label>
+    <input type="text" id="make" name="make" required>
+    <br>
+    <label for="model">Model:</label>
+    <input type="text" id="model" name="model" required>
+    <br>
+    <label for="year">Year:</label>
+    <input type="number" id="year" name="year" required>
+    <br>
+    <button type="submit">Add Car</button>
+</form>
+
+<script>
+    // Fetch and display cars
+    fetch('/api/cars')
+        .then(response => response.json())
+        .then(cars => {
+            const carsList = document.getElementById('cars-list');
+            cars.forEach(car => {
+                const carDiv = document.createElement('div');
+                carDiv.innerHTML = `<p>${car.make} ${car.model} (${car.year})</p>`;
+                carsList.appendChild(carDiv);
+            });
+        });
+
+    // Add car
+    document.getElementById('add-car-form').addEventListener('submit', event => {
+        event.preventDefault();
+        const token = localStorage.getItem('access_token'); // Store your token here
+
+        const formData = new FormData(event.target);
+        fetch('/api/cars', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                make: formData.get('make'),
+                model: formData.get('model'),
+                year: formData.get('year'),
+            }),
+        }).then(response => response.json())
+          .then(data => {
+              console.log('Car added:', data);
+              location.reload(); // Reload the page to show the new car
+          });
+    });
+</script>
+{% endblock %}
