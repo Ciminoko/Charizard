@@ -1,0 +1,32 @@
+// Add car
+document.getElementById('add-car-form').addEventListener('submit', event => {
+    event.preventDefault(); // Предотвращает стандартное поведение формы
+    const formData = new FormData(event.target);
+
+    fetch('/api/cars', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            make: formData.get('make'),
+            model: formData.get('model'),
+            year: parseInt(formData.get('year')), // Убедитесь, что year — это число
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Car added:', data);
+        alert('Car added successfully!');
+        fetchCars(); // Обновляем список машин
+    })
+    .catch(error => {
+        console.error('Error adding car:', error);
+        alert('Failed to add car. Please check the server logs for more details.');
+    });
+});

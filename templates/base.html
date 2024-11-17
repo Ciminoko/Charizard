@@ -7,17 +7,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <header>
-        <h1>Welcome to the Car Store</h1>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            {% if not session.get('user_id') %}
                 <li><a href="{{ url_for('api.register') }}">Register</a></li>
                 <li><a href="{{ url_for('api.login') }}">Login</a></li>
-                <li><a href="{{ url_for('api.get_cars') }}">View Cars</a></li>
-            </ul>
-        </nav>
-    </header>
+            {% else %}
+                <li><a href="{{ url_for('api.logout') }}">Logout</a></li>
+                <li><a href="{{ url_for('add_car_form') }}">Add Car</a></li>
+            {% endif %}
+            <li><a href="{{ url_for('api.get_cars') }}">View Cars</a></li>
+        </ul>
+    </nav>
     <main>
         {% block content %}{% endblock %}
     </main>

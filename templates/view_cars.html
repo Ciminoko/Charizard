@@ -19,27 +19,31 @@
 
 <script>
     // Fetch and display cars
-    fetch('/api/cars')
-        .then(response => response.json())
-        .then(cars => {
-            const carsList = document.getElementById('cars-list');
-            cars.forEach(car => {
-                const carDiv = document.createElement('div');
-                carDiv.innerHTML = `<p>${car.make} ${car.model} (${car.year})</p>`;
-                carsList.appendChild(carDiv);
+    const fetchCars = () => {
+        fetch('/api/cars')
+            .then(response => response.json())
+            .then(cars => {
+                const carsList = document.getElementById('cars-list');
+                carsList.innerHTML = ''; // Clear the list before appending
+                cars.forEach(car => {
+                    const carDiv = document.createElement('div');
+                    carDiv.innerHTML = `
+                        <p>${car.make} ${car.model} (${car.year})</p>
+                        <button onclick="editCar('${car.id}', '${car.make}', '${car.model}', ${car.year})">Edit</button>
+                        <button onclick="deleteCar('${car.id}')">Delete</button>
+                    `;
+                    carsList.appendChild(carDiv);
+                });
             });
-        });
+    };
 
     // Add car
     document.getElementById('add-car-form').addEventListener('submit', event => {
         event.preventDefault();
-        const token = localStorage.getItem('access_token'); // Store your token here
-
         const formData = new FormData(event.target);
         fetch('/api/cars', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -47,11 +51,52 @@
                 model: formData.get('model'),
                 year: formData.get('year'),
             }),
-        }).then(response => response.json())
-          .then(data => {
-              console.log('Car added:', data);
-              location.reload(); // Reload the page to show the new car
-          });
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Car added:', data);
+            fetchCars(); // Reload the cars list
+        });
     });
+
+    // Edit car
+    const editCar = (id, make, model, year) => {
+        const newMake = prompt('Enter new make:', make);
+        const newModel = prompt('Enter new model:', model);
+        const newYear = prompt('Enter new year:', year);
+
+        fetch(`/api/cars/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                make: newMake,
+                model: newModel,
+                year: parseInt(newYear),
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Car updated:', data);
+            fetchCars(); // Reload the cars list
+        });
+    };
+
+    // Delete car
+    const deleteCar = (id) => {
+        fetch(`/api/cars/${id}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Car deleted');
+                fetchCars(); // Reload the cars list
+            }
+        });
+    };
+
+    // Initial fetch of cars
+    fetchCars();
 </script>
 {% endblock %}
