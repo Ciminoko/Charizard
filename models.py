@@ -13,9 +13,10 @@ class Car(db.Model):
     make = db.Column(db.String(50), nullable=False)
     model = db.Column(db.String(50), nullable=False)
     year = db.Column(db.Integer, nullable=False)
-    price = db.Column(db.Float, nullable=False)  # Добавлено поле цены
+    price = db.Column(db.Float, nullable=False)
     image = db.Column(db.String(200))  # Поле для хранения имени файла изображения
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
         return f'<Car {self.make} {self.model}>'
+

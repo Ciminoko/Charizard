@@ -24,14 +24,16 @@ Session(app)  # Инициализируем Flask-Session
 with app.app_context():
     db.create_all()
 
+
 # Регистрация Blueprint для API
 app.register_blueprint(api, url_prefix='/api')
+
 
 # Маршруты для страниц
 @app.route('/')
 def home():
     cars = Car.query.all()  # Получение всех машин из базы данных
-    cars_list = [{"make": car.make, "model": car.model, "year": car.year, "price": car.price, "photo": car.photo} for car in cars]
+    cars_list = [{"make": car.make, "model": car.model, "year": car.year, "price": car.price, "image": car.image} for car in cars]
     return render_template('index.html', cars=cars_list)
 
 
