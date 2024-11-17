@@ -3,10 +3,18 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background-image: url('/static/images/background.jpg'); /* Фон */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    color: white; /* Делает весь текст белым */
 }
 
 h1, h2 {
     text-align: center;
+    color: white; /* Белый цвет для заголовков */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Тень для улучшения читаемости */
 }
 
 form {
@@ -14,11 +22,28 @@ form {
     margin: 20px auto;
     padding: 10px;
     border: 1px solid #ccc;
+    background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый фон */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white; /* Белый цвет текста внутри формы */
 }
 
-input {
+input, button {
     display: block;
     width: 100%;
     padding: 8px;
     margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #222; /* Темный фон для контраста */
+    color: white; /* Белый текст в полях ввода */
+}
+
+a {
+    color: #00bfff; /* Голубой цвет ссылок */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
 }
