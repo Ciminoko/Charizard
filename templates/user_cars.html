@@ -1,21 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>All Available Cars</h2>
-<div id="cars-list"></div>
+<h2>Your Cars</h2>
+<div id="user-cars-list"></div>
 
 <script>
-    // Fetch and display all cars
-    fetch('/api/cars')
+    // Fetch and display user's cars
+    fetch('/api/user/cars', {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        }
+    })
         .then(response => response.json())
         .then(cars => {
-            const carsList = document.getElementById('cars-list');
+            const userCarsList = document.getElementById('user-cars-list');
             cars.forEach(car => {
                 const carDiv = document.createElement('div');
                 carDiv.innerHTML = `<p>${car.make} ${car.model} (${car.year}) - $${car.price}</p>`;
                 if (car.image) {
                     carDiv.innerHTML += `<img src="/uploads/${car.image}" alt="${car.make} ${car.model}" width="200">`;
                 }
-                carsList.appendChild(carDiv);
+                userCarsList.appendChild(carDiv);
             });
         });
 </script>

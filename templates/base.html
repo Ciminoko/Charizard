@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Car Store{% endblock %}</title>
+    <title>Car Store</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <h1>Welcome to the Car Store</h1>
+    <p>Your one-stop shop for browsing and managing cars.</p>
+
     <nav>
         <ul>
             <li><a href="{{ url_for('home') }}">Home</a></li>
@@ -16,13 +19,30 @@
             {% else %}
                 <li><a href="{{ url_for('api.logout') }}">Logout</a></li>
                 <li><a href="{{ url_for('add_car_form') }}">Add Car</a></li>
+                <li><a href="{{ url_for('user_cars') }}">Your Cars</a></li>
             {% endif %}
-            <li><a href="{{ url_for('api.get_cars') }}">View Cars</a></li>
+            <li><a href="{{ url_for('view_cars') }}">View All Cars</a></li>
         </ul>
     </nav>
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+
+    <section>
+        <h2>Available Cars</h2>
+        {% if cars %}
+            <ul>
+            {% for car in cars %}
+                <li>
+                    <strong>{{ car.make }} {{ car.model }}</strong> ({{ car.year }}) - ${{ car.price }}<br>
+                    {% if car.photo %}
+                        <img src="{{ url_for('get_uploaded_file', filename=car.photo) }}" alt="Car Photo" width="200">
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No cars available at the moment.</p>
+        {% endif %}
+    </section>
+
     <footer>
         <p>&copy; 2024 Car Store. All rights reserved.</p>
     </footer>
